@@ -22,27 +22,27 @@ class apt {
 
   $debian_url = $apt_debian_url ? {
     ''      => 'http://http.debian.net/debian/',
-    default => "${apt_debian_url}",
+    default => $apt_debian_url,
   }
   $security_url = $apt_security_url ? {
     ''      => 'http://security.debian.org/',
-    default => "${apt_security_url}",
+    default => $apt_security_url,
   }
   $backports_url = $apt_backports_url ? {
     ''      => 'http://backports.debian.org/debian-backports/',
-    default => "${apt_backports_url}",
+    default => $apt_backports_url,
   }
   $volatile_url = $apt_volatile_url ? {
     ''      => 'http://volatile.debian.org/debian-volatile/',
-    default => "${apt_volatile_url}",
+    default => $apt_volatile_url,
   }
   $ubuntu_url = $apt_ubuntu_url ? {
     ''      => 'http://archive.ubuntu.com/ubuntu',
-    default => "${apt_ubuntu_url}",
+    default => $apt_ubuntu_url,
   }
   $disable_update = $apt_disable_update ? {
     ''      => false,
-    default => $apt_disable_update  
+    default => $apt_disable_update
   }
 
   case $operatingsystem {
