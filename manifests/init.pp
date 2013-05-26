@@ -68,6 +68,13 @@ class apt(
       mode    => '0644';
   }
 
+  # This exec should not be used outside of this class to preserve stage independency
+  exec {
+    'refresh_apt':
+      command     => '/usr/bin/apt-get update',
+      refreshonly => true,
+  }
+
   apt_conf { '02show_upgraded':
     source => [ "puppet:///modules/site_apt/${::fqdn}/02show_upgraded",
                 'puppet:///modules/site_apt/02show_upgraded',
