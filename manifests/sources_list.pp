@@ -35,7 +35,8 @@ define apt::sources_list (
 
   exec {
     "refresh_apt_${name}":
-      command     => '/usr/bin/apt-get update'
+      command     => '/usr/bin/apt-get update',
+      refreshonly => true
   }
 }
 
