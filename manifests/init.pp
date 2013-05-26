@@ -114,9 +114,15 @@ class apt(
   # backports uses the normal archive key now
   package { 'debian-backports-keyring': ensure => absent }
 
-  include common::moduledir
-  $apt_base_dir = "${common::moduledir::module_dir_path}/apt"
-  modules_dir { 'apt': }
+  $apt_base_dir = "/var/lib/puppet/modules/apt"
+  file {
+    $apt_base_dir:
+      source => "puppet:///modules/apt/empty",
+      checksum => mtime,
+      ignore => '.ignore',
+      recurse => true, purge => true, force => true,
+      mode => 0644, owner => root, group => 0;
+  }
 
   if $::custom_key_dir {
     file { "${apt_base_dir}/keys.d":
