@@ -10,6 +10,7 @@ deb-src <%= debian_url %> <%= codename %> <%= lrepos %>
 <% end -%>
 
 # security
+<% if use_volatile=scope.lookupvar('apt::use_security') -%>
 <% if ((release=scope.lookupvar('apt::release')) == "unstable" || release == "experimental") -%>
 # There is no security support for <%= release %>
 <% else -%>
@@ -18,14 +19,17 @@ deb <%= security_url=scope.lookupvar('apt::security_url') %> <%= codename %>/upd
 deb-src <%= security_url %> <%= codename %>/updates <%= lrepos %>
 <% end -%>
 <% end -%>
+<% end -%>
 
 # backports
+<% if use_volatile=scope.lookupvar('apt::use_backports') -%>
 <% if (release == "testing" || release == "unstable" || release == "experimental") -%>
 # There is no backports archive for <%= release %>
 <% else -%>
 deb <%= backports_url=scope.lookupvar('apt::backports_url') %> <%= codename %>-backports <%= lrepos %>
 <% if include_src -%>
 deb-src <%= backports_url %> <%= codename %>-backports <%= lrepos %>
+<% end -%>
 <% end -%>
 <% end -%>
 

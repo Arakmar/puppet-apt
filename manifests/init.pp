@@ -5,6 +5,8 @@
 
 class apt(
   $codename = $apt::params::codename,
+  $use_security = $apt::params::use_security,
+  $use_backports = $apt::params::use_backports,
   $use_volatile = $apt::params::use_volatile,
   $include_src = $apt::params::include_src,
   $use_next_release = $apt::params::use_next_release,

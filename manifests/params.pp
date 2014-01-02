@@ -13,5 +13,7 @@ class apt::params () {
   $ubuntu_url = 'http://archive.ubuntu.com/ubuntu'
   $repos = 'auto'
   $custom_preferences = ''
-  $disable_update = false
+  $disable_update = false,
+  $use_security = true,
+  $use_backports = true
 }
