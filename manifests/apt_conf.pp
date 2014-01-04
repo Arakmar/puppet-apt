@@ -1,8 +1,8 @@
 define apt::apt_conf(
   $ensure = 'present',
   $source = '',
-  $content = undef
-)
+  $content = undef,
+  $refresh_apt = true )
 {
   if $ensure == 'present' {
     if $source == '' and $content == undef {
@@ -19,7 +19,6 @@ define apt::apt_conf(
     owner  => root,
     group  => 0,
     mode   => '0644',
-    notify => Exec["refresh_apt_${name}"],
   }
 
   if $source {
@@ -38,4 +37,11 @@ define apt::apt_conf(
       command     => '/usr/bin/apt-get update',
       refreshonly => true
   }
+
+  if $refresh_apt {
+    File["/etc/apt/apt.conf.d/${name}"] {
+      notify => Exec['refresh_apt_${name}'],
+    }
+  }
+
 }

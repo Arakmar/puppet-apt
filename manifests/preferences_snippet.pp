@@ -13,7 +13,7 @@ define apt::preferences_snippet (
   }
 
   if $ensure == 'present' {
-    if $custom_preferences == false {
+    if $apt::custom_preferences == false {
       fail('Trying to define a preferences_snippet with $custom_preferences set to false.')
     }
 
@@ -34,9 +34,6 @@ define apt::preferences_snippet (
     owner  => root, group => 0, mode => '0644';
   }
 
-  # This should really work in the same manner as sources_list and apt_conf
-  # snippets, but since the preferences.d directory cannot be used in Debian
-  # lenny, we can't generalize without going into ugly special-casing.
   case $source {
     '': {
       case $release {

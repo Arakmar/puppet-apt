@@ -17,7 +17,9 @@ class apt(
   $ubuntu_url = $apt::params::ubuntu_url,
   $repos = $apt::params::repos,
   $custom_preferences = $apt::params::custom_preferences,
-  $disable_update = $apt::params::disable_update
+  $custom_sources_list = '',
+  $disable_update = $apt::params::disable_update,
+  $custom_key_dir = $apt::params::custom_key_dir
 ) inherits apt::params {
   case $::operatingsystem {
     'debian': {
@@ -54,9 +56,9 @@ class apt(
   $next_codename = debian_nextcodename($codename)
   $next_release = debian_nextrelease($release)
 
-  $sources_content = $::custom_sources_list ? {
+  $sources_content = $custom_sources_list ? {
     ''      => template( "apt/${::operatingsystem}/sources.list.erb"),
-    default => $::custom_sources_list
+    default => $custom_sources_list
   }
   file {
     # include main, security and backports
@@ -126,9 +128,9 @@ class apt(
       mode => 0644, owner => root, group => 0;
   }
 
-  if $::custom_key_dir {
+  if $custom_key_dir {
     file { "${apt_base_dir}/keys.d":
-      source  => $::custom_key_dir,
+      source  => $custom_key_dir,
       recurse => true,
       owner   => root,
       group   => root,
@@ -141,7 +143,11 @@ class apt(
     }
     if $custom_preferences != false {
       Exec['custom_keys'] {
-        before => File['apt_config'],
+        before => [ Exec[refresh_apt], File['apt_config'] ]
+      }
+    } else {
+      Exec['custom_keys'] {
+        before => Exec[refresh_apt]
       }
     }
   }

@@ -16,4 +16,5 @@ class apt::params () {
   $disable_update = false
   $use_security = true
   $use_backports = true
+  $custom_key_dir = false
 }
